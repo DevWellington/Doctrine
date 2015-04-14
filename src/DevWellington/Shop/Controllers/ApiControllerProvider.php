@@ -70,7 +70,7 @@ class ApiControllerProvider implements ControllerProviderInterface
         $controllers->put('/product/{id}', function(Request $request, $id) use($app){
 
             $data = [
-                'id' => (int) $request->request->get('id'),
+                'id' => (int) $id,
                 'name' => $request->request->get('name'),
                 'description' => $request->request->get('description'),
                 'value' => $request->request->get('value')
