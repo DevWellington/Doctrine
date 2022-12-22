@@ -10,11 +10,6 @@ use Symfony\Component\HttpFoundation\Request;
 class ApiControllerProvider implements ControllerProviderInterface
 {
     /**
-     * @var Serializer
-     */
-    private $serializer;
-
-    /**
      * Returns routes to connect to the given application.
      *
      * @param Application $app An Application instance
