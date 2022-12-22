@@ -10,6 +10,11 @@ use Symfony\Component\HttpFoundation\Request;
 class ApiControllerProvider implements ControllerProviderInterface
 {
     /**
+     * @var Serializer
+     */
+    private $serializer;
+
+    /**
      * Returns routes to connect to the given application.
      *
      * @param Application $app An Application instance
@@ -23,17 +28,17 @@ class ApiControllerProvider implements ControllerProviderInterface
         Request::enableHttpMethodParameterOverride();
 
         $controllers->get('/product/list', function() use($app){
-            return $app->json(
-                $app['productService']->fetchAll()
-            );
+            $data = $app['productService']->fetchAll();
+
+            return $app['serializer']->serialize($data, 'json');
         })
             ->bind('get-api-product-list')
         ;
 
         $controllers->get('/product/{id}', function($id) use($app){
-            return $app->json(
-                $app['productService']->fetch($id)
-            );
+            $data = $app['productService']->fetch($id);
+
+            return $app['serializer']->serialize( $data, 'json');
         })
             ->bind('get-api-product-unique')
         ;

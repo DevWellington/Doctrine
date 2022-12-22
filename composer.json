@@ -6,7 +6,9 @@
         "guzzlehttp/guzzle": "dev-master",
         "symfony/validator": "~2.6",
         "doctrine/orm": "~2.4",
-        "doctrine/cache": "v1.8.1"
+        "doctrine/cache": "v1.8.1",
+        "symfony/serializer": "^5.4",
+        "symfony/property-access": "^5.4"
     },
     "config": {
         "bin-dir": "bin/"

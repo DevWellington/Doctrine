@@ -67,3 +67,15 @@ $em = EntityManager::create(
     $config,
     $evm
 );
+
+use Symfony\Component\Serializer\Encoder\JsonEncode,
+    Symfony\Component\Serializer\Encoder\JsonEncoder,
+    Symfony\Component\Serializer\Normalizer\AbstractNormalizer,
+    Symfony\Component\Serializer\Normalizer\ObjectNormalizer,
+    Symfony\Component\Serializer\Serializer
+;
+
+$normalizer = new ObjectNormalizer();
+$encoder = new JsonEncoder();
+
+$app['serializer'] = new Serializer([$normalizer], [$encoder]);
