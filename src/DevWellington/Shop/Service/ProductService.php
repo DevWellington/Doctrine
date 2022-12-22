@@ -2,31 +2,23 @@
 
 namespace DevWellington\Shop\Service;
 
-use DevWellington\Shop\Entity\EntityInterface;
+use DevWellington\Shop\Entity\ProductEntity;
 use DevWellington\Shop\Mapper\MapperInterface;
+use Doctrine\ORM\EntityManager;
 
 class ProductService implements ServiceInterface
 {
     /**
-     * @var ProductEntity
+     * @var EntityManager
      */
-    private $productEntity;
+    private $em;
 
     /**
-     * @var ProductMapper
+     * @param EntityManager $em
      */
-    private $productMapper;
-
-    /**
-     * @param EntityInterface $productEntity
-     * @param MapperInterface $productMapper
-     */
-    public function __construct(
-        EntityInterface $productEntity,
-        MapperInterface $productMapper
-    ){
-        $this->productEntity = $productEntity;
-        $this->productMapper = $productMapper;
+    public function __construct(EntityManager $em)
+    {
+        $this->em = $em;
     }
 
     /**
@@ -34,68 +26,77 @@ class ProductService implements ServiceInterface
      */
     public function fetchAll()
     {
-        return $this->productMapper->fetchAll();
+        $repo = $this->em->getRepository("DevWellington\Shop\Entity\ProductEntity");        
+        return $repo->findAll();
     }
 
-    public function fetch($id)
+    public function fetch(int $id)
     {
-        return $this->productMapper->fetch((int) $id);
+        $repo = $this->em->getRepository("DevWellington\Shop\Entity\ProductEntity");
+        return $repo->find($id);
     }
 
     /**
      * @param array $data
-     * @return mixed
+     * @return ProductEntity
      */
     public function insert(array $data)
     {
-        $this->productEntity->setName($data['name']);
-        $this->productEntity->setDescription($data['description']);
-        $this->productEntity->setValue($data['value']);
+        $productEntity = new ProductEntity();
 
-        return $this->productMapper
-            ->setEntity($this->productEntity)
-            ->insert()
-        ;
+        // $productEntity->setId(7);
+        $productEntity->setName($data['name']);
+        $productEntity->setDescription($data['description']);
+        $productEntity->setValue($data['value']);
+        var_dump($productEntity);
+
+        $this->em->persist($productEntity);
+        $this->em->flush();
+
+        return $productEntity;
     }
 
     /**
      * @param array $data
-     * @return mixed
+     * @return ProductEntity
      */
     public function update(array $data)
     {
-        $this->productEntity->setId($data['id']);
-        $this->productEntity->setName($data['name']);
-        $this->productEntity->setDescription($data['description']);
-        $this->productEntity->setValue($data['value']);
+        $productEntity = $this->em->getReference("DevWellington\Shop\Entity\ProductEntity", $data['id']);
 
-        return $this->productMapper
-            ->setEntity($this->productEntity)
-            ->update()
-        ;
+        $productEntity->setName($data['name']);
+        $productEntity->setDescription($data['description']);
+        $productEntity->setValue($data['value']);
+
+        $this->em->persist($productEntity);
+        $this->em->flush();
+
+        return $productEntity;
     }
 
     /**
      * @param $id
-     * @return mixed
+     * @return boolean
      */
     public function delete($id)
     {
-        $this->productEntity->setId($id);
+        $productEntity = $this->em->getReference("DevWellington\Shop\Entity\ProductEntity", $id);
 
-        return $this->productMapper
-            ->setEntity($this->productEntity)
-            ->delete()
-        ;
+        $this->em->remove($productEntity);
+        $this->em->flush();
+
+        return $this->em->flush();
     }
 
     public function validate(array $data)
     {
-        $this->productEntity->setId(isset($data['id']) ? $data['id'] : null);
-        $this->productEntity->setName($data['name']);
-        $this->productEntity->setDescription($data['description']);
-        $this->productEntity->setValue($data['value']);
+        $productEntity = $this->em->getReference("DevWellington\Shop\Entity\ProductEntity", 1);
 
-        return $this->productEntity;
+        $productEntity->setId(isset($data['id']) ? $data['id'] : null);
+        $productEntity->setName($data['name']);
+        $productEntity->setDescription($data['description']);
+        $productEntity->setValue($data['value']);
+
+        return $productEntity;
     }
 } 

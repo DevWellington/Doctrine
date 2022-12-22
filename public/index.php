@@ -7,17 +7,11 @@ use \DevWellington\Shop\Mapper\ProductMapper;
 use \Symfony\Component\HttpFoundation\Request;
 use \DevWellington\Shop\Controllers\ApiControllerProvider;
 
-$app['productService'] = function() use($em, $app)
-{
-    $productEntity = new ProductEntity();
-    $productMapper = new ProductMapper($app['pdo'], $em);
-    $productService = new \DevWellington\Shop\Service\ProductService(
-        $productEntity,
-        $productMapper
-    );
-
-    return $productService;
-};
+/**
+ * @var ProductService
+ * return ProductService
+ */
+$app['productService'] = new \DevWellington\Shop\Service\ProductService($em);
 
 // Todo: create 'serviceProductValidator'
 $app->get('/', function() use($app){
@@ -67,7 +61,7 @@ $app->get('/products/insert/', function() use($app){
 
 $app->get('/app/product/delete/{id}', function($id) use ($app){
 
-    $return = $app['productService']->delete((int) $id);
+    $return = $app['productService']->delete($id);
 
     $app['session']->set('msg_status', ! $return === false);
     $app['session']->set('msg_description', 'Removido');
