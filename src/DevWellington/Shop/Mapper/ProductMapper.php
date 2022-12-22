@@ -2,13 +2,13 @@
 
 namespace DevWellington\Shop\Mapper;
 
-use DevWellington\Shop\Entity\EntityInterface;
+use DevWellington\Shop\Entity\ProductEntity;
 use Doctrine\ORM\EntityManager;
 
 class ProductMapper implements MapperInterface
 {
     /**
-     * @var EntityInterface
+     * @var ProductEntity
      */
     private $productEntity;
 
@@ -32,7 +32,7 @@ class ProductMapper implements MapperInterface
     }
 
     /**
-     * @return EntityInterface
+     * @return ProductEntity
      */
     public function getEntity()
     {
@@ -40,10 +40,10 @@ class ProductMapper implements MapperInterface
     }
 
     /**
-     * @param EntityInterface $productEntity
+     * @param ProductEntity $productEntity
      * @return $this
      */
-    public function setEntity(EntityInterface $productEntity)
+    public function setEntity(ProductEntity $productEntity)
     {
         $this->productEntity = $productEntity;
         return $this;

@@ -8,12 +8,12 @@ use DevWellington\Shop\Mapper\MapperInterface;
 class ProductService implements ServiceInterface
 {
     /**
-     * @var EntityInterface
+     * @var ProductEntity
      */
     private $productEntity;
 
     /**
-     * @var MapperInterface
+     * @var ProductMapper
      */
     private $productMapper;
 
